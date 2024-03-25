@@ -1,19 +1,45 @@
 import React, { useState } from 'react'
 import '../styles/login.css';
 import twitter from '../assets/twitter-background.jpg';
+import axios from 'axios';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 
 
 const Login = () => {
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
+    axios.defaults.baseURL = 'http://localhost:5000';
+    const [formState,setFormState] = useState('');
     const [formData,setFormData] = useState({
         username: '',
         password: '',
     });
 
-    const handleSubmit = (e) => {
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(username+" "+password);
+        try{
+            const res = await axios.post('/login',formData);
+            if(res.data === true){
+                window.location.href = '/home';
+            }
+        }catch(err){
+            console.log("Error Submitting Form: "+err);
+        }
+    }
+
+    const register_login_handle = () =>{
+        if(formState === "login"){
+            <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} register_login_handle={register_login_handle} />
+        }else if(formState === "register"){
+            <RegisterForm />
+        }
     }
 
     return (
@@ -23,12 +49,13 @@ const Login = () => {
             </div>
             <div className='form-container'>
                 <h1>Its what is Happening Now!!</h1>
-                <form onSubmit={handleSubmit} method="post">
-                    <input type="text" id='username' placeholder='Enter Username:' onChange={(e) => setUsername(e.target.value)} required />
-                    <input type="password" id="password" placeholder='Enter Password:' onChange={(e) => setPassword(e.target.value)} />
+                <form onSubmit={handleSubmit} method="post" >
+                    <input type="text" name='username' placeholder='Enter Username:' onChange={handleChange} />
+                    <input type="password" name='password' placeholder='Enter Password:' onChange={handleChange} />
                     <input type="submit" value="Login" />
                 </form>
-            </div>
+                Not a User?<button className='register-button' name='register' onSubmit={register_login_handle}>Register Here!!</button>
+                </div>
         </div>
     )
 }

@@ -20,6 +20,8 @@ img{
     position: relative;
     text-align: center;
     justify-content: center;
+    position: relative;
+    display: block;
 }
 form{
     display: inline-block;

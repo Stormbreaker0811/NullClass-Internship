@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    max-width: 100%;
+}
+.container .navbar{
+    display: block;
+    overflow: hidden;
+}
+.container .navbar ul{
+    list-style: none;
+    float: left;
+}
+.container .navbar ul li{
+    list-style: none;
+}
+.container .navbar ul li a{
+    text-decoration: none;
+}
